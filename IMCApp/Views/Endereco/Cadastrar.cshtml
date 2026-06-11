@@ -1,0 +1,94 @@
+@model IMCApp.Models.EnderecoViewModel
+
+@{
+    ViewData["Title"] = "Cadastrar Endereço";
+}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Buscar CEP</h4>
+            </div>
+            <div class="card-body">
+                <form asp-action="Cadastrar" method="post" novalidate>
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label asp-for="CEP" class="form-label"></label>
+                            <input asp-for="CEP" class="form-control" id="cepInput" />
+                            <span asp-validation-for="CEP" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 d-flex align-items-end">
+                            <button type="button" id="buscarCep" class="btn btn-outline-primary w-100">Buscar CEP</button>
+                        </div>
+                        <div class="col-md-12">
+                            <label asp-for="Logradouro" class="form-label"></label>
+                            <input asp-for="Logradouro" class="form-control" readonly />
+                            <span asp-validation-for="Logradouro" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Bairro" class="form-label"></label>
+                            <input asp-for="Bairro" class="form-control" readonly />
+                            <span asp-validation-for="Bairro" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="Localidade" class="form-label">Cidade</label>
+                            <input asp-for="Localidade" class="form-control" readonly />
+                            <span asp-validation-for="Localidade" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-2">
+                            <label asp-for="UF" class="form-label"></label>
+                            <input asp-for="UF" class="form-control" readonly />
+                            <span asp-validation-for="UF" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Numero" class="form-label"></label>
+                            <input asp-for="Numero" class="form-control" />
+                            <span asp-validation-for="Numero" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Complemento" class="form-label"></label>
+                            <input asp-for="Complemento" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="mt-4 text-end">
+                        <button type="submit" class="btn btn-success px-5">Confirmar Endereço</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(function () {
+            function buscarCep() {
+                var cep = $('#cepInput').val().replace(/\D/g, '');
+                if (!cep || cep.length !== 8) {
+                    alert('Informe um CEP válido com 8 dígitos.');
+                    return;
+                }
+
+                $.getJSON('https://viacep.com.br/ws/' + cep + '/json/', function (data) {
+                    if (!data || data.erro) {
+                        alert('CEP não encontrado. Verifique e tente novamente.');
+                        return;
+                    }
+
+                    $('#Logradouro').val(data.logradouro || '');
+                    $('#Bairro').val(data.bairro || '');
+                    $('#Localidade').val(data.localidade || '');
+                    $('#UF').val(data.uf || '');
+                }).fail(function () {
+                    alert('Erro ao consultar o CEP. Tente novamente mais tarde.');
+                });
+            }
+
+            $('#cepInput').on('blur', buscarCep);
+            $('#buscarCep').on('click', buscarCep);
+        });
+    </script>
+}

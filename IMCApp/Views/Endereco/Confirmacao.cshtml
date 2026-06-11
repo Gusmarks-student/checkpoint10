@@ -1,0 +1,45 @@
+@model IMCApp.Models.EnderecoViewModel
+
+@{
+    ViewData["Title"] = "Confirmação de Endereço";
+}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-lg-8">
+        <div class="card shadow-sm border-success">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0">Endereço Confirmado</h4>
+            </div>
+            <div class="card-body">
+                <p class="lead">Os dados do endereço foram recebidos com sucesso.</p>
+
+                <dl class="row">
+                    <dt class="col-sm-4">CEP</dt>
+                    <dd class="col-sm-8">@Model.CEP</dd>
+
+                    <dt class="col-sm-4">Logradouro</dt>
+                    <dd class="col-sm-8">@Model.Logradouro</dd>
+
+                    <dt class="col-sm-4">Bairro</dt>
+                    <dd class="col-sm-8">@Model.Bairro</dd>
+
+                    <dt class="col-sm-4">Cidade</dt>
+                    <dd class="col-sm-8">@Model.Localidade</dd>
+
+                    <dt class="col-sm-4">UF</dt>
+                    <dd class="col-sm-8">@Model.UF</dd>
+
+                    <dt class="col-sm-4">Número</dt>
+                    <dd class="col-sm-8">@Model.Numero</dd>
+
+                    <dt class="col-sm-4">Complemento</dt>
+                    <dd class="col-sm-8">@Model.Complemento</dd>
+                </dl>
+
+                <div class="mt-4 text-end">
+                    <a asp-action="Cadastrar" class="btn btn-outline-primary">Voltar e editar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
